@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<addon addon_id="ThemeHouse_NoThreadLinks" title="[⌂] No Thread Links" version_string="1.0.0" version_id="1447261019" url="http://xf.themehouse.io" install_callback_class="ThemeHouse_Install" install_callback_method="install" uninstall_callback_class="ThemeHouse_Install" uninstall_callback_method="uninstall">
+  <admin_navigation/>
+  <admin_permissions/>
+  <admin_style_properties/>
+  <admin_templates/>
+  <admin_template_modifications/>
+  <code_events/>
+  <code_event_listeners>
+    <listener event_id="controller_pre_dispatch" execute_order="10" callback_class="ThemeHouse_Listener_ControllerPreDispatch" callback_method="controllerPreDispatch" active="1" hint="" description=""/>
+    <listener event_id="file_health_check" execute_order="10" callback_class="ThemeHouse_NoThreadLinks_Listener_FileHealthCheck" callback_method="fileHealthCheck" active="1" hint="" description=""/>
+    <listener event_id="init_dependencies" execute_order="10" callback_class="ThemeHouse_Listener_InitDependencies" callback_method="initDependencies" active="1" hint="" description=""/>
+    <listener event_id="load_class" execute_order="10" callback_class="ThemeHouse_NoThreadLinks_Listener_LoadClass" callback_method="loadClassModel" active="0" hint="XenForo_Model_Post" description="XenForo_Model_Post (For XenForo 1.2 and above)" compatibility_switch="1"/>
+    <listener event_id="load_class" execute_order="10" callback_class="ThemeHouse_NoThreadLinks_Listener_LoadClass" callback_method="loadClassBbCode" active="0" hint="XenForo_BbCode_Formatter_Base" description="XenForo_BbCode_Formatter_Base (For XenForo 1.2 and above)" compatibility_switch="1"/>
+    <listener event_id="load_class_bb_code" execute_order="10" callback_class="ThemeHouse_NoThreadLinks_Listener_LoadClass" callback_method="loadClassBbCode" active="1" hint="" description="(For XenForo 1.1 and below)" compatibility_switch="1"/>
+    <listener event_id="load_class_model" execute_order="10" callback_class="ThemeHouse_NoThreadLinks_Listener_LoadClass" callback_method="loadClassModel" active="1" hint="" description="(For XenForo 1.1 and below)" compatibility_switch="1"/>
+    <listener event_id="template_create" execute_order="10" callback_class="ThemeHouse_NoThreadLinks_Listener_TemplateCreate" callback_method="templateCreate" active="1" hint="" description="(For XenForo 1.1 and below)" compatibility_switch="1"/>
+    <listener event_id="template_hook" execute_order="10" callback_class="ThemeHouse_NoThreadLinks_Listener_TemplateHook" callback_method="templateHook" active="1" hint="" description="(For XenForo 1.1 and below)" compatibility_switch="1"/>
+  </code_event_listeners>
+  <cron/>
+  <email_templates/>
+  <email_template_modifications/>
+  <optiongroups>
+    <group group_id="th_noThreadLinks" display_order="2000" debug_only="0"/>
+    <option option_id="th_noThreadLinks_nodeIds" edit_format="callback" data_type="array" can_backup="1">
+      <default_value>a:0:{}</default_value>
+      <edit_format_params>ThemeHouse_NoThreadLinks_Option_NodeChooser::renderCheckbox</edit_format_params>
+      <sub_options>*</sub_options>
+      <relation group_id="th_noThreadLinks" display_order="10"/>
+    </option>
+  </optiongroups>
+  <permissions>
+    <permission_groups/>
+    <permissions/>
+    <interface_groups/>
+  </permissions>
+  <phrases>
+    <phrase title="option_group_th_noThreadLinks" version_id="1381339752" version_string="1.0.0"><![CDATA[No Thread Links by ThemeHouse]]></phrase>
+    <phrase title="option_group_th_noThreadLinks_description" version_id="1381510157" version_string="1.0.0"><![CDATA[Options for the No Thread Links by ThemeHouse add-on.]]></phrase>
+    <phrase title="option_th_noThreadLinks_nodeIds" version_id="1381510157" version_string="1.0.0"><![CDATA[No Linking to Threads in Forums]]></phrase>
+    <phrase title="option_th_noThreadLinks_nodeIds_explain" version_id="1381532453" version_string="1.0.0"><![CDATA[Links in user content to threads or posts in any of the above selected forums will be removed.]]></phrase>
+    <phrase title="th_thread_has_been_removed_nothreadlinks" version_id="1357835340" version_string="1.0.0"><![CDATA[URL has been removed.]]></phrase>
+  </phrases>
+  <route_prefixes/>
+  <style_properties/>
+  <templates>
+    <template title="th_nothreadlinks.css" version_id="1357835340" version_string="1.0.3"><![CDATA[.blockedThreadTip
+{
+	{xen:property nodeDescriptionTip}
+}
+
+	.blockedThreadTip .arrow
+	{
+		{xen:property nodeDescriptionTipArrow}
+	}
+
+#blockedThreadTooltip
+{
+	display: none;
+}]]></template>
+  </templates>
+  <public_template_modifications>
+    <modification template="footer" modification_key="th_copyrightNotice_noThreadLinks" description="Copyright notice for [⌂] No Thread Links" execution_order="1" enabled="1" action="callback">
+      <find><![CDATA[/{xen:phrase (?:xenforo|extra)_copyright}/]]></find>
+      <replace><![CDATA[ThemeHouse_Listener_InitDependencies::copyrightNotice]]></replace>
+    </modification>
+    <modification template="thread_view" modification_key="th_threadView_noThreadLinks" description="Adds tooltip for blocked threads." execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[<xen:hook name="thread_view_pagenav_before" params="{xen:array 'thread={$thread}'}" />]]></find>
+      <replace><![CDATA[<xen:hook name="thread_view_pagenav_before" params="{xen:array 'thread={$thread}'}" />
+<blockquote id="blockedThreadTooltip">{xen:phrase th_thread_has_been_removed_nothreadlinks}<span class="arrow"></blockquote>
+<xen:require js="js/themehouse/nothreadlinks/blocked_thread_tooltip.js" />
+<xen:require css="th_nothreadlinks.css" />]]></replace>
+    </modification>
+  </public_template_modifications>
+  <bb_code_media_sites/>
+  <bb_codes/>
+</addon>
